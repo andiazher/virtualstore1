@@ -1,14 +1,17 @@
+<?php
+session_start();
+$_SESSION['server'] = $_SERVER['HTTP_HOST']."/virtualstore";
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <link rel="icon" type="image/png" href="favicon.ico" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-	<meta name="viewport" content="width=device-width" />
-        
-        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+	    <meta name="viewport" content="width=device-width" />
+
         <link rel="stylesheet" href="assets/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <script src="assets/js/jquery-3.2.1.js"></script>
@@ -22,36 +25,22 @@
         <link rel="stylesheet" href="assets/css/chartist.css">
         <link rel="stylesheet" href="assets/css/chartist.min.css">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" />
-        <!--
-        <script type="text/javascript" id="ca_eum_ba" agent=browser src="https://cloud.ca.com/mdo/v1/sdks/browser/BA.js" data-profileUrl="https://collector-axa.cloud.ca.com/api/1/urn:ca:tenantId:6D9A82C5-B1BA-4E10-94B1-61357FE88E67/urn:ca:appId:Demo%20App/profile?agent=browser" data-tenantID="6D9A82C5-B1BA-4E10-94B1-61357FE88E67" data-appID="Demo App" data-appKey="776928e0-4f83-11e7-8056-b9dcd6578ee6" ></script>
-        -->
         <title>Virtual Shopping | andiazher Inc</title>
         
     </head>
     <body>
         <div id="contend">
-            <div class="text-center">
-                <h2>Loading....</h2>
-                <img src="assets/images/loading_spinner.gif" height="35" width="35">
-            </div>
+            <?php
+                include("pages/dashboard.php");
+            ?>
         </div>
-    <script>
-        function load(param){
-            var q= "<%=q2%>";
-            var s1= "<%=sessionId%>";
-            var s2= "<%=key%>";
-            $.post("pages/dashboard.php?"+q, {sessionId: s1, key:s2}, function(data){
-                    $("#contend").html(data);
-                });
-        }
-        load("");
-    </script>
+    
     </body>
     <style>
         body {
             width:100%;
             height:100%;
-            background: url("pages/images/image.png") no-repeat center center fixed;
+            background: url("assets/images/font3.jpg") no-repeat center center fixed;
             background-color: <%=color%>;
             background-repeat: no-repeat;
             background-size: cover;

@@ -16,14 +16,14 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                     </button>
-                      <a class="navbar-brand" href="#reload" onclick="reloadAll()"><img src="assets/images/market.png" alt="My Store" height="25" width="25"></a>
+                      <a class="navbar-brand" href="#reload" onclick="reloadAll()"><img src="assets/images/marketLogo.png" alt="My Store" height="25" width="115"></a>
                   </div>
 
                   <!-- Collect the nav links, forms, and other content for toggling -->
                   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav" id="menusnavbar">
                         <!-- HERE CODE MENUS -->
-                        <li class=""><a href="#reload">My Virtual Store</a></li>
+                        <li class=""><a href="#reload"></a></li>
                         <img src="assets/images/loading_spinner.gif" height="15" width="15">
                     </ul>
                       <form class="navbar-form navbar-left" action="search#search" method="get" id="search">
@@ -41,7 +41,7 @@
                     <ul class="nav navbar-nav navbar-right">
                       <!--<li><a href="#"></a></li> -->
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="username"><%=user%><span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="username">Iniciar Sesion<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                           <li><a href="#profile">Profile</a></li>
                           <li><a href="#editProfile">Edit Profile</a></li>
@@ -145,6 +145,4 @@
         });
     });
     </script>
-    
-</html>
 
