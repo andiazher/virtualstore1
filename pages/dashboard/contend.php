@@ -14,9 +14,14 @@
                     <img src="assets/images/loading_spinner.gif" height="32" width="32">
                     Loading content, please wait ....
                     <?php  
-                    $cc = curl_init("http://localhost/api1.virtualstore/index.php/api/oauth/andiazhe/password");  
-                    $url_content =  curl_exec($cc);  
-                    curl_close($cc);  
+                        $cc = curl_init(); 
+                        curl_setopt($cc, CURLOPT_URL, $GLOBALS['api']."get_productos"); 
+                        curl_setopt($cc, CURLOPT_HEADER, 0);
+                        curl_setopt($cc, CURLOPT_RETURNTRANSFER, true); 
+                        curl_setopt($cc, CURLOPT_POST , true); 
+                        $response =  curl_exec($cc);
+                        curl_close($cc);
+                        echo($response);
                     ?>  
                 </div>
                 <div class="panel-footer">
