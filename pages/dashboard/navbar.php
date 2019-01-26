@@ -1,148 +1,89 @@
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>NavBar</title>
+<nav class="navbar navbar-default"> <!--style="background: transparent;-->
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand" href="#reload"><img src="assets/images/marketLogo.png" alt="My Store" height="25" width="115"></a>
+    </div>
 
-    </head>
-    <body>
-        <nav class="navbar navbar-default" > <!--style="background: transparent;-->
-                <div class="container-fluid">
-                  <!-- Brand and toggle get grouped for better mobile display -->
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                      <a class="navbar-brand" href="#reload" onclick="reloadAll()"><img src="assets/images/marketLogo.png" alt="My Store" height="25" width="115"></a>
-                  </div>
-
-                  <!-- Collect the nav links, forms, and other content for toggling -->
-                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav" id="menusnavbar">
-                        <!-- HERE CODE MENUS -->
-                        <li class=""><a href="#reload"></a></li>
-                        <img src="assets/images/loading_spinner.gif" height="15" width="15">
-                    </ul>
-                      <form class="navbar-form navbar-left" action="search#search" method="get" id="search">
-                      <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search for..." name="q" value="" required>
-                            <input type="hidden" name="sessionId" value="<%=sessionId%>">
-                            <input type="hidden" name="key" value="<%=key%>">
-                            <span class="input-group-btn">
-                              <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                            </span>
-                          </div><!-- /input-group -->
-                      </div>
-                    </form>
-                    <ul class="nav navbar-nav navbar-right">
-                      <!--<li><a href="#"></a></li> -->
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="username">Iniciar Sesion<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="#profile">Profile</a></li>
-                          <li><a href="#editProfile">Edit Profile</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#logoutUser" onclick="logout()">Logout</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </nav>
-    </body>
-    <script>
-        function logout() {
-            var para="logout";
-            $.post("loginApp", {param: para}, function(data){
-                $("#contend").html(data);
-            });
-        }
-        function reloadAll(){
-            loadTwo();
-        }
-        function laodName(){
-            var username= "<%=user%>";
-            var s1= "<%=sessionId%>";
-            var s2= "<%=key%>";
-            $.post("loginParamters", {user: username, sessionId: s1, key:s2 }, function(data){
-                if(data!=0){
-                    $("#username").html(data +"<span class=\"caret\">");
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav" id="menusnavbar">
+        <!-- HERE CODE MENUS -->
+        <?php  
+            $cc = curl_init(); 
+            curl_setopt($cc, CURLOPT_URL, $GLOBALS['api']."get_navbars?ciudad_id=1"); 
+            curl_setopt($cc, CURLOPT_HEADER, 0);
+            curl_setopt($cc, CURLOPT_RETURNTRANSFER, true); 
+            curl_setopt($cc, CURLOPT_POST , true); 
+            $response =  curl_exec($cc);
+            curl_close($cc);
+            $response = json_decode($response);
+            if ($response->response){
+              $navbars = $response->data->navbars;
+              $active = true;
+              foreach($navbars as $navbar){
+                $active_class="";
+                if($active){
+                  $active_class=" active";
+                  $active = false;
                 }
-            });
-        }
-        laodName();
-        function changeActiveNavbar(rolnavid, id){
-            $(".active").removeClass("active");
-            var s1= "<%=sessionId%>";
-            var s2= "<%=key%>";
-            $.post("menuActive", {navbar: rolnavid, sessionId: s1, key:s2}, function(data){
-                $("#navid"+id).addClass("active");
-            });
-        }
-        function loadNavbar(){
-            var s1= "<%=sessionId%>";
-            var s2= "<%=key%>";
-            $.post("navBarContent", {sessionId: s1, key:s2}, function(data){
-                var v = JSON.parse(data);
-                $("#menusnavbar").html("");
-                if(v.error!="0"){
-                    for(i in v){
-                        menu= v[i];
-                        
-                        if(menu.isdropdown=="1"){
-                          var ls="";
-                          ls+= "<li class=\"dropdown "+menu.active+" \" id=\"navid"+menu.id+"\" ><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">"+menu.name+"<span class=\"caret\"></span></a>";  
-                          ls+="<ul class=\"dropdown-menu\">";
-                          for(n in menu.steps){
-                            step = menu.steps[n];
-                            if(step.id!="0"){
-                              if(step.isurlormethod=="1"){
-                                ls+="<li><a href=\""+step.urlormethod+"\" target=\"_blank\">"+step.name+"</a></li>";
-                              }else{
-                                ls+="<li><a href=\"#"+step.name+"\" onclick=\""+step.urlormethod+"\">"+step.name+"</a></li>";
-                                //ls+="<script>"+step.urlormethod+"<\/script>";
-                              }
-                            }else{
-                              ls+="<li role=\"separator\" class=\"divider\"></li>";
-                            }
-                          }
-                          ls+="</ul>";
-                          ls+="</li>";
-                          $("#menusnavbar").append(ls);
-                        }
-                        else{
-                          if (menu.isurlormethod=="1") {
-                            $("#menusnavbar").append("<li class=\""+menu.active+"\" id=\"navid"+menu.id+"\"><a href=\""+menu.urlormethod+"\" target=\"_blank\">"+menu.name+"</a></li>");
-                          }else{
-                            $("#menusnavbar").append("<li class=\""+menu.active+"\" id=\"navid"+menu.id+"\"><a href=\"#"+menu.name+"\" onclick=\"changeActiveNavbar("+menu.rolnavbid+", "+menu.id+"); "+menu.urlormethod+"\">"+menu.name+"</a></li>");
-                            $("#menusnavbar").append("<script>"+menu.urlormethod+"<\/script>");
-                          }
-                        }
-                    }
+                if($navbar->isdropdown){
+                  echo("<li class=\"dropdown".$active_class."\">\n");
+                  echo("<a class=\"dropdown-toggle\" data-toggle=
+                    \"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                    ".$navbar->name." <span class=\"caret\"></span></a>");
+                  echo("</li>\n");
                 }
                 else{
-                  $("#contentMenu").append("Error. No loads navbars ");
-                  loadContend("Error", "pages/dashboard/error.html");
+                  echo("<li class=\"".$active_class."\"><a href=\"#".$navbar->name."\">".$navbar->name."</a></li>\n");
                 }
-            });
-        }
-        loadNavbar(); 
-    $(document).ready(function(){
-      $("#search").submit(function(){
-          $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: $(this).serialize(),
-                    success: function(data){
-                      search(data);
-                  }
-                })
-            return false;
-        });
-    });
-    </script>
+              }
+              
+            }
+            else{
+              echo("<img src=\"assets/images/loading_spinner.gif\" height=\"15\" width=\"15\">");
+            }
+        ?>
+      </ul>
+        <form class="navbar-form navbar-left" action="search#search" method="get" id="search">
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for..." name="q" value="" required>
+            <input type="hidden" name="sessionId" value="<%=sessionId%>">
+            <input type="hidden" name="key" value="<%=key%>">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </span>
+            </div><!-- /input-group -->
+        </div>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <?php
+          if (isset($_SESSION['user']) && isset($_SESSION['username'])){
+            echo("<li class=\"dropdown\">");
+            echo("<a class=\"dropdown-toggle\" data-toggle=
+            \"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
+            ".$_SESSION['username']." <span class=\"caret\"></span></a>");
+            echo("<ul class=\"dropdown-menu\">");
+            echo("<li><a href=\"#profile\">Mi cuenta</a></li>");
+            echo("<li role=\"separator\" class=\"divider\"></li>");
+            echo("<li><a href=\"loginApp.php?action=execute&logout=true\">Cerrar Sesión</a></li>");
+            echo("</ul>");
+            echo("</li>");
+          }
+          else{
+            echo("<li><a href=\"login.php\">Iniciar Sesion</a></li>");
+          }
+        ?>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
 
